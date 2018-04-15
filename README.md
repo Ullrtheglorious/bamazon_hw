@@ -5,42 +5,42 @@ Screen shot of the database I used for bamazon
 Customer Section ------------------------
 
 First Menu for the Customer, gives options for either All Items, or if you select a department it filters those
-[Alt text](images/customerMenu1.png?raw=true "")
+![Alt text](images/customerMenu1.png?raw=true "")
 
 If Customer selects all items, this is what they see, if they selected a specific category it would only show that department, below it populates just the item in a selectable menu to purchase
-[Alt text](images/customerPurchase.png?raw=true "")
+![Alt text](images/customerPurchase.png?raw=true "")
 
 The Customer then puts in a QTY, if it is more than what the store has it shows this message;
-[Alt text](images/Insufficient.png?raw=true "")
+![Alt text](images/Insufficient.png?raw=true "")
 
 if it is less than what the store has it shows this message;
-[Alt text](images/successfulPurchase.png?raw=true "")
+![Alt text](images/successfulPurchase.png?raw=true "")
 
 It then updates the DB by subtracting the purchased QTY from the store QTY, as you can see, 10 Qty has been removed from the original 17, leaving 7
-[Alt text](images/updatingQTY.png?raw=true "")
+![Alt text](images/updatingQTY.png?raw=true "")
 
 Manager Section ------------------------------
 
 Using bamazonManager.js this is the first menu that is shown
-[Alt text](images/ManagerStart.png?raw=true "")
+![Alt text](images/ManagerStart.png?raw=true "")
 
 Selecting View all items  shows
-[Alt text](images/managerViewAll.png?raw=true "")
+![Alt text](images/managerViewAll.png?raw=true "")
 
 selecting View Low Inventory shows  all qty under 5
-[Alt text](images/managerViewLow.png?raw=true "")
+![Alt text](images/managerViewLow.png?raw=true "")
 
 Selecting add inventory shows, and asks which item you would like to order for
-[Alt text](images/ManagerSelectingAdd.png?raw=true "")
+![Alt text](images/ManagerSelectingAdd.png?raw=true "")
 
 Then you place an order by keying in the qty
-[Alt text](images/managerOrderComplete.png?raw=true "")
+![Alt text](images/managerOrderComplete.png?raw=true "")
 
 If the Manager selects add a new Product, its prompts the manager to key all this in,
-[Alt text](images/managerAddItems.png?raw=true "")
+![Alt text](images/managerAddItems.png?raw=true "")
 
 and then it updates to the DB, you can see the xbox going back up to 17 from adding inventory and the new Picture Frame item being added
-[Alt text](images/managerShowingQTy.png?raw=true "")
+![Alt text](images/managerShowingQTy.png?raw=true "")
 
 Overview
 In this activity, you'll be creating an Amazon-like storefront with the MySQL skills you learned this week. The app will take in orders from customers and deplete stock from the store's inventory. As a bonus task, you can program your app to track product sales across your store's departments and then provide a summary of the highest-grossing departments in the store.
