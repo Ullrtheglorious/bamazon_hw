@@ -57,142 +57,361 @@ function startingQuestion() {
                         connection.connect(function (err) {
                             switch (data.items) {
                                 case "All Items":
+                                    console.log("----------------------------")
                                     allItems();
                                     break;
                                 case "Electronics":
+                                    console.log("----------------------------")
                                     electronicsItems();
                                     break;
                                 case "Kitchen":
+                                    console.log("----------------------------")
                                     kitchenItems();
                                     break;
                                 case "Office":
+                                    console.log("----------------------------")
                                     officeItems();
                                     break;
                                 case "Furniture":
+                                    console.log("----------------------------")
                                     furnitureItems();
                                     break;
                                 case "Home":
+                                    console.log("----------------------------")
                                     homeItems();
                                     break;
                             }
-                            connection.end();
+                            
                         });
                     })
             }
         });
 }
 
+var selectedItem;
 
 function allItems() {
     connection.query("SELECT * FROM products", function (err, data) {
         var itemList = [];
+        var stockQty = {};
         for (var i = 0; i < data.length; i++) {
-            itemList.push((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Quantity Left: " + data[i].stock_quantity + " | Price: " + data[i].price));
+            console.log((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Price: " + data[i].price + " | Quantity Left: " + data[i].stock_quantity))
+            itemList.push(data[i].item_id.toString() + ") " + data[i].product_name)
+            stockQty[data[i].item_id] = (data[i].stock_quantity);
         }
+        console.log("----------------------------------------")
         inquirer
             .prompt([
                 {
                     type: "list",
                     message: "Select an item to purchase?",
                     choices: itemList,
-                    name: "stocklist"
+                    name: "item"
                 },
+                {
+                    type: "input",
+                    message: "How many would you like to buy",
+                    name: "count",
+                    validate: function (value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                        startingQuestion()
+                    }
+                }
             ])
-        // console.log("-----------------------------------")
+            .then(function (data) {
+                var itemId = data.item.split(")")[0];
+                if (data.count > stockQty[itemId] || stockQty[itemId] == 0) {
+                    console.log("\nInsufficient Quantity!\n");
+                    startingQuestion()
+                } else {
+                    connection.query("UPDATE products SET ? WHERE ?",
+                        [
+                            {
+                                stock_quantity: stockQty[parseInt(itemId)] - parseInt(data.count)
+                            },
+                            {
+                                Item_id: itemId
+                            }
+                        ]);
+                }
+                console.log("\nPurchase Complete!\n");
+                connection.end();
+                startingQuestion()
+            })
     });
 };
 
 function electronicsItems() {
     var query = connection.query("SELECT * FROM products WHERE department_name=?", ["Electronics"], function (err, data) {
         var itemList = [];
+        var stockQty = {};
         for (var i = 0; i < data.length; i++) {
-            itemList.push((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Quantity Left: " + data[i].stock_quantity + " | Price: " + data[i].price));
+            console.log((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Price: " + data[i].price + " | Quantity Left: " + data[i].stock_quantity))
+            itemList.push(data[i].item_id.toString() + ") " + data[i].product_name)
+            stockQty[data[i].item_id] = (data[i].stock_quantity);
         }
+        console.log("----------------------------------------")
         inquirer
             .prompt([
                 {
                     type: "list",
                     message: "Select an item to purchase?",
                     choices: itemList,
-                    name: "stocklist"
+                    name: "item"
                 },
+                {
+                    type: "input",
+                    message: "How many would you like to buy",
+                    name: "count",
+                    validate: function (value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                        startingQuestion()
+                    }
+                }
             ])
-        // console.log("-----------------------------------")
+            .then(function (data) {
+                var itemId = data.item.split(")")[0];
+                if (data.count > stockQty[itemId] || stockQty[itemId] == 0) {
+                    console.log("\nInsufficient Quantity!\n");
+                    startingQuestion()
+                } else {
+                    connection.query("UPDATE products SET ? WHERE ?",
+                        [
+                            {
+                                stock_quantity: stockQty[parseInt(itemId)] - parseInt(data.count)
+                            },
+                            {
+                                Item_id: itemId
+                            }
+                        ]);
+                }
+                console.log("\nPurchase Complete!\n");
+                connection.end();
+                startingQuestion()
+            })
     });
 };
 function kitchenItems() {
     var query = connection.query("SELECT * FROM products WHERE department_name=?", ["Kitchen"], function (err, data) {
         var itemList = [];
+        var stockQty = {};
         for (var i = 0; i < data.length; i++) {
-            itemList.push((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Quantity Left: " + data[i].stock_quantity + " | Price: " + data[i].price));
+            console.log((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Price: " + data[i].price + " | Quantity Left: " + data[i].stock_quantity))
+            itemList.push(data[i].item_id.toString() + ") " + data[i].product_name)
+            stockQty[data[i].item_id] = (data[i].stock_quantity);
         }
+        console.log("----------------------------------------")
         inquirer
             .prompt([
                 {
                     type: "list",
                     message: "Select an item to purchase?",
                     choices: itemList,
-                    name: "stocklist"
+                    name: "item"
                 },
+                {
+                    type: "input",
+                    message: "How many would you like to buy",
+                    name: "count",
+                    validate: function (value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                        startingQuestion()
+                    }
+                }
             ])
-        // console.log("-----------------------------------")
+            .then(function (data) {
+                var itemId = data.item.split(")")[0];
+                if (data.count > stockQty[itemId] || stockQty[itemId] == 0) {
+                    console.log("\nInsufficient Quantity!\n");
+                    startingQuestion()
+                } else {
+                    connection.query("UPDATE products SET ? WHERE ?",
+                        [
+                            {
+                                stock_quantity: stockQty[parseInt(itemId)] - parseInt(data.count)
+                            },
+                            {
+                                Item_id: itemId
+                            }
+                        ]);
+                }
+                console.log("\nPurchase Complete!\n");
+                connection.end();
+                startingQuestion()
+            })
     });
 };
 function officeItems() {
     var query = connection.query("SELECT * FROM products WHERE department_name=?", ["Office"], function (err, data) {
         var itemList = [];
+        var stockQty = {};
         for (var i = 0; i < data.length; i++) {
-            itemList.push((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Quantity Left: " + data[i].stock_quantity + " | Price: " + data[i].price));
+            console.log((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Price: " + data[i].price + " | Quantity Left: " + data[i].stock_quantity))
+            itemList.push(data[i].item_id.toString() + ") " + data[i].product_name)
+            stockQty[data[i].item_id] = (data[i].stock_quantity);
         }
+        console.log("----------------------------------------")
         inquirer
             .prompt([
                 {
                     type: "list",
                     message: "Select an item to purchase?",
                     choices: itemList,
-                    name: "stocklist"
+                    name: "item"
                 },
+                {
+                    type: "input",
+                    message: "How many would you like to buy",
+                    name: "count",
+                    validate: function (value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                        startingQuestion()
+                    }
+                }
             ])
-        // console.log("-----------------------------------")
+            .then(function (data) {
+                var itemId = data.item.split(")")[0];
+                if (data.count > stockQty[itemId] || stockQty[itemId] == 0) {
+                    console.log("\nInsufficient Quantity!\n");
+                    startingQuestion()
+                } else {
+                    connection.query("UPDATE products SET ? WHERE ?",
+                        [
+                            {
+                                stock_quantity: stockQty[parseInt(itemId)] - parseInt(data.count)
+                            },
+                            {
+                                Item_id: itemId
+                            }
+                        ]);
+                }
+                console.log("\nPurchase Complete!\n");
+                connection.end();
+                startingQuestion()
+            })
     });
 };
 function furnitureItems() {
     var query = connection.query("SELECT * FROM products WHERE department_name=?", ["Furniture"], function (err, data) {
         var itemList = [];
+        var stockQty = {};
         for (var i = 0; i < data.length; i++) {
-            itemList.push((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Quantity Left: " + data[i].stock_quantity + " | Price: " + data[i].price));
+            console.log((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Price: " + data[i].price + " | Quantity Left: " + data[i].stock_quantity))
+            itemList.push(data[i].item_id.toString() + ") " + data[i].product_name)
+            stockQty[data[i].item_id] = (data[i].stock_quantity);
         }
+        console.log("----------------------------------------")
         inquirer
             .prompt([
                 {
                     type: "list",
                     message: "Select an item to purchase?",
                     choices: itemList,
-                    name: "stocklist"
+                    name: "item"
                 },
+                {
+                    type: "input",
+                    message: "How many would you like to buy",
+                    name: "count",
+                    validate: function (value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                        startingQuestion()
+                    }
+                }
             ])
-        // console.log("-----------------------------------")
+            .then(function (data) {
+                var itemId = data.item.split(")")[0];
+                if (data.count > stockQty[itemId] || stockQty[itemId] == 0) {
+                    console.log("\nInsufficient Quantity!\n");
+                    startingQuestion()
+                } else {
+                    connection.query("UPDATE products SET ? WHERE ?",
+                        [
+                            {
+                                stock_quantity: stockQty[parseInt(itemId)] - parseInt(data.count)
+                            },
+                            {
+                                Item_id: itemId
+                            }
+                        ]);
+                }
+                console.log("\nPurchase Complete!\n");
+                connection.end();
+                startingQuestion()
+            })
     });
 };
 function homeItems() {
     var query = connection.query("SELECT * FROM products WHERE department_name=?", ["Home"], function (err, data) {
         var itemList = [];
+        var stockQty = {};
         for (var i = 0; i < data.length; i++) {
-            itemList.push((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Quantity Left: " + data[i].stock_quantity + " | Price: " + data[i].price));
+            console.log((data[i].item_id + " | Department: " + data[i].department_name + " | Item: " + data[i].product_name + " | Price: " + data[i].price + " | Quantity Left: " + data[i].stock_quantity))
+            itemList.push(data[i].item_id.toString() + ") " + data[i].product_name)
+            stockQty[data[i].item_id] = (data[i].stock_quantity);
         }
+        console.log("----------------------------------------")
         inquirer
             .prompt([
                 {
                     type: "list",
                     message: "Select an item to purchase?",
                     choices: itemList,
-                    name: "stocklist"
+                    name: "item"
                 },
+                {
+                    type: "input",
+                    message: "How many would you like to buy",
+                    name: "count",
+                    validate: function (value) {
+                        if (isNaN(value) === false) {
+                            return true;
+                        }
+                        return false;
+                        startingQuestion()
+                    }
+                }    
             ])
-        // console.log("-----------------------------------")
+            .then(function (data) {
+                var itemId = data.item.split(")")[0];
+                if (data.count > stockQty[itemId] || stockQty[itemId] == 0) {
+                    console.log("\nInsufficient Quantity!\n");
+                    startingQuestion()
+                } else {
+                    connection.query("UPDATE products SET ? WHERE ?",
+                        [
+                            {
+                                stock_quantity: stockQty[parseInt(itemId)] - parseInt(data.count)
+                            },
+                            {
+                                Item_id: itemId
+                            }
+                        ]);
+                }
+                console.log("\nPurchase Complete!\n");
+                connection.end();
+                startingQuestion()
+            })
     });
 };
-
+// function buyItems () {
+    
+// }
 
 
 
